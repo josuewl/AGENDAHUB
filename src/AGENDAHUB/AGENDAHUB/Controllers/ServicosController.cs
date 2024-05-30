@@ -133,7 +133,7 @@ namespace AGENDAHUB.Controllers
             var profissionais = _context.Profissionais.Where(p => p.Usuario.Id == userId).ToList();
 
             // Inicialize SelectedProfissionais como uma lista vazia
-            var servicos = new Servicos { SelectedProfissionais = new List<int>() };
+            var servicos = new Servico { SelectedProfissionais = new List<int>() };
 
             // Configure o ViewBag.Profissionais e passe o modelo para a visualização
             ViewBag.Profissionais = new SelectList(profissionais, "ID_Profissional", "Nome");
@@ -143,7 +143,7 @@ namespace AGENDAHUB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Servico,Nome,Preco,TempoDeExecucao,Imagem,SelectedProfissionais")] Servicos servicos, IFormFile file)
+        public async Task<IActionResult> Create([Bind("ID_Servico,Nome,Preco,TempoDeExecucao,Imagem,SelectedProfissionais")] Servico servicos, IFormFile file)
         {
             int userId = GetUserId();
             ViewBag.Profissionais = new SelectList(_context.Profissionais.Where(p => p.Usuario.Id == userId), "ID_Profissional", "Nome");
@@ -234,7 +234,7 @@ namespace AGENDAHUB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_Servico,Nome,Preco,TempoDeExecucao,ID_Profissional,SelectedProfissionais")] Servicos servicos, IFormFile Imagem)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Servico,Nome,Preco,TempoDeExecucao,ID_Profissional,SelectedProfissionais")] Servico servicos, IFormFile Imagem)
         {
             int userId = GetUserId();
             if (id != servicos.ID_Servico)
@@ -344,7 +344,7 @@ namespace AGENDAHUB.Controllers
 
             var servico = await _context.Servicos
                 .Include(s => s.ServicosProfissionais)
-                .Include(s => s.Agendamentos)
+                .Include(s => s.Agendamento)
                 .FirstOrDefaultAsync(s => s.ID_Servico == id && s.UsuarioID == userId);
 
             if (servico == null)
@@ -354,7 +354,7 @@ namespace AGENDAHUB.Controllers
             }
 
             // Verificar se há agendamentos vinculados ao serviço
-            if (servico.Agendamentos.Any())
+            if (servico.Agendamento.Any())
             {
                 // Se houver agendamentos, não permitir a exclusão
                 TempData["ErrorMessage"] = "Não é possível excluir o serviço, pois existem agendamentos associados a ele.";

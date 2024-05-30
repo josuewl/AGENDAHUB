@@ -7,6 +7,7 @@
     <title>@ViewData["Title"] - AGENDAHUB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AGENDAHUB.styles.css" asp-append-version="true" />
     <link rel="icon" href="~/favicon.ico" type="image/x-icon">
@@ -16,123 +17,94 @@
 
     @* Header Logo + botão Menu *@
    
-    <header>
+<header>
         <nav class="navbar bg-body-tertiary align-items-center">
-            <div class="container-fluid d-flex mt-4">
-                <div class="menu-button me-4">
-                    <img src="~/images/menu.png" style="width: 2rem; height: 2rem;" alt="menu-icon" id="openMenu" />
-                    <span class="menu-text">MENU</span>
-                </div>
+            <div class="container-fluid d-flex justify-content-between mt-4">
                 <a class="navbar-brand" href="#">
-                    
-                    <img src="~/images/logoAgendaHub.png" alt="Logo" class="imgLogo">
-                   
+                    <img src="~/images/logoAgendaHub.png" alt="Logo" class="imgLogo img-fluid" style="max-height: 50px;">
                 </a>
-             
+                <div class="d-flex align-items-center ms-auto">
+                    @{
+                        var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var imgSrc = Url.Action("GetImg", "Account", new { id = userId });
+                    }
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if (!string.IsNullOrEmpty(imgSrc))
+                        {
+                            <img src="@imgSrc" alt="Imagem do Usuário" width="43" height="43" class="rounded-circle me-2"> <strong> Olá, @User.Identity.Name</strong>
+                        }
+                        else
+                        {
+                            <img src="~/images/logoAgendaHub.png" alt="Logo AgendaHub" width="43" height="43" class="rounded-circle me-2">  <strong>@User.Identity.Name</strong>
+                        }
+                    </a>
+                </div>
             </div>
         </nav>
     </header>
 
 
 
+    <!-- Menu Lateral -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-1 bg-light fixed-menu" style="width: 100px;">
+                <div class="menu-header d-flex justify-content-initial">
+                    <img src="~/images/logoAgendaHubIcon2.png" alt="Logo" style="width: 4.5rem; height: 3rem;" class="imgLogoOfCanvas">
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="contentMenu">
+                        <li>
+                            <a class="nav_link" style="width: 2rem; height: 2rem;" asp-area="" asp-controller="Agendamentos" asp-action="Index">
+                                <img src="~/images/calendario.png" style="width: 2rem; height: 2rem;" alt="calendar-icon" />
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav_link" asp-area="" asp-controller="Caixa" asp-action="Index">
+                                <img src="~/images/caixa.png" style="width: 2rem; height: 2rem;" alt="finance-icon" />
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav_link" asp-area="" asp-controller="Clientes" asp-action="Index">
+                                <img src="~/images/clientes.png" style="width: 2rem; height: 2rem;" alt="client-icon" />
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav_link" asp-area="" asp-controller="Servicos" asp-action="Index">
+                                <img src="~/images/serviços.png" style="width: 2rem; height: 2rem;" alt="services-icon" />
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="contentMenuTwo">
+                    <hr class="dropdown-divider">
+                    <!-- Segunda linha alinhada com a parte inferior / User Menu -->
 
 
-   
-
-
-
-
-
-
-    
-
-   
-
-
-
-
-    @* Menu Lateral *@
-    <div class="offcanvas offcanvas-start offCanvasMenu" tabindex="-1" id="myOffcanvas" data-bs-backdrop="false">
-        <div class="offcanvas-header d-flex justify-content-center">
-            <img src="~/images/logoAgendaHub.png" alt="Logo" class="imgLogoOfCanvas">
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar" id="closeMenu"></button>
-        </div>
-
-        <hr class="dropdown-divider">
-
-        <div class="offcanvas-body">
-            <ul class="contentMenu">
-                <li>
-                    <a class="nav_link" asp-area="" asp-controller="Agendamentos" asp-action="Index">
-                        <img src="~/images/calendario.png" style="width: 2rem; height: 2rem;" alt="calendar-icon" />
-                        <span class="nav_name">Agendamentos</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav_link" asp-area="" asp-controller="Caixa" asp-action="Index">
-                        <img src="~/images/caixa.png" style="width: 2rem; height: 2rem;" alt="finance-icon" />
-                        <span class="nav_name">Caixa</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav_link" asp-area="" asp-controller="Clientes" asp-action="Index">
-                        <img src="~/images/clientes.png" style="width: 2rem; height: 2rem;" alt="client-icon" />
-                        <span class="nav_name">Clientes</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="nav_link" asp-area="" asp-controller="Servicos" asp-action="Index">
-                        <img src="~/images/serviços.png" style="width: 2rem; height: 2rem;" alt="services-icon" />
-                        <span class="nav_name">Servicos</span>
-                    </a>
-                </li>
-            </ul>
-
-            <hr class="dropdown-divider">
-
-            @* Segunda linha alinhada com a parte inferior / User Menu *@
-            <div class="dropdown" id="menuUser">
-                <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                    @{
-                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                        var imgSrc = Url.Action("GetImg", "Account", new { id = userId });
-                    }
-                    @if (!string.IsNullOrEmpty(imgSrc))
-                    {
-                        <img src="@imgSrc" alt="Imagem do Usuário" width="43" height="43" class="rounded-circle me-2"> <strong>@User.Identity.Name</strong>
-                    }
-                    else
-                    {
-                        <img src="~/images/logoAgendaHub.png" alt="Logo AgendaHub" width="43" height="43" class="rounded-circle me-2">  <strong>@User.Identity.Name</strong>
-                    }
-                </a>
-                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                    <li>
+                        <li>
                         <a class="nav-link" asp-area="" asp-controller="Configuracao" asp-action="Edit">
-                            <img src="~/images/config.png" style="width: 1rem; height: 1rem;">
-                            <span class="nav_name">Configurações</span>
+                            <img src="~/images/config.png" style="width: 2rem; height: 2rem;">
                         </a>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">
-                            <img src="~/images/sair.png" style="width: 1rem; height: 1rem;">
-                            <span class="nav_name">Sair</span>
+                        </li>
+                        <li>
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">
+                                <i class="bi bi-box-arrow-left icon-large"></i>
                         </a>
-                    </li>
-                </ul>
+                        </li>
+                   
+                    </ul>
+
+
+                </div>
             </div>
-        </div>
-    </div>
 
-    @* Renderização das páginas *@
-    <div class="main-container">
-        <main role="main" class="container-fluid p-3">
-            @RenderBody()
-        </main>
-    </div>
+            <!-- Renderização das páginas -->
+            <div class="col-lg content-area">
+                <main role="main" class="p-3">
+                    @RenderBody()
+                </main>
+            </div>
 
-    @* Footer *@
+    @* Footer
     <footer class="border-top footer text-center text-black pt-4">
         <div class="container">
             <div class="row" id="footerContatos">
@@ -153,6 +125,7 @@
             </div>
         </div>
     </footer>
+            *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

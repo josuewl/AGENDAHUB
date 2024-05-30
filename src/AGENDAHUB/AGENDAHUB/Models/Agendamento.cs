@@ -1,3 +1,4 @@
+using FluentAssertions.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -5,18 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AGENDAHUB.Models
 {
     [Table("Agendamentos")]
-    public class Agendamentos
+    public class Agendamento
     {
         [Key]
-        public int ID_Agendamentos { get; set; }
+        public int IdAgendamento { get; set; }
 
         [Required(ErrorMessage = "Obrigatório informar o serviço!")]
         [Display(Name = "Serviço")]
-        public int ID_Servico { get; set; }
+        public int IdServico { get; set; }
 
         [Required(ErrorMessage = "Obrigatório informar o cliente!")]
         [Display(Name = "Cliente")]
-        public int ID_Cliente { get; set; }
+        public int IdCliente { get; set; }
 
         [Required(ErrorMessage = "Obrigatório informar a data!")]
         [Column(TypeName = "date")]
@@ -26,28 +27,29 @@ namespace AGENDAHUB.Models
         [Column(TypeName = "time")]
         public TimeSpan Hora { get; set; }
 
+        [Required(ErrorMessage = "Obrigatório informar o status!")]
         public StatusAgendamento Status { get; set; }
+
         [Required(ErrorMessage = "Obrigatório informar o profissional!")]
         [Display(Name = "Profissional")]
-        public int ID_Profissional { get; set; }
+        public int IdProfissional { get; set; }
 
-        // Propriedade de navegação para Usuario
-        public int UsuarioID { get; set; }
+        [Required]
+        public int UsuarioId { get; set; }
+
+        // Propriedades de navegação
+        [ForeignKey("IdCliente")]
+        public Cliente Cliente { get; set; }
+
+        [ForeignKey("IdServico")]
+        public Servico Servico { get; set; }
+
+        [ForeignKey("IdProfissional")]
+        public Profissional Profissional { get; set; }
+
+        [ForeignKey("UsuarioId")]
         public Usuario Usuario { get; set; }
 
-        // Propriedade de navegação para o cliente
-        [ForeignKey("ID_Cliente")]
-        public Clientes Cliente { get; set; }
-
-        // Propriedade de navegação para o serviço
-        [ForeignKey("ID_Servico")]
-        public Servicos Servicos { get; set; }
-
-        // Propriedade de navegação para o profissional
-        [ForeignKey("ID_Profissional")]
-        public Profissionais Profissionais { get; set; }
-
-        // Propriedade de navegação para o caixa
         public Caixa Caixa { get; set; }
 
         public enum StatusAgendamento

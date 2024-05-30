@@ -29,7 +29,7 @@ namespace AGENDAHUB.Models
         public byte[] Imagem { get; set; }
 
         public Configuracao Configuracao { get; set; } // Propriedade de navegação para a configuração
-        public Profissionais Profissionais { get; set; } // Propriedade de navegação para a configuração
+        public Profissional Profissionais { get; set; } // Propriedade de navegação para a configuração
     }
 
     public enum Perfil

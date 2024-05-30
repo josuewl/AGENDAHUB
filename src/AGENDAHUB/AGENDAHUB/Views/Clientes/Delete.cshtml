@@ -1,4 +1,4 @@
-﻿@model AGENDAHUB.Models.Clientes
+﻿@model AGENDAHUB.Models.Cliente
 <link rel="stylesheet" href="~/css/Clientes.css" asp-append-version="true" />
 
 @{
@@ -41,7 +41,7 @@
 <div class="row mt-3">
     <div class="col d-flex justify-content-center">
         <form asp-action="Delete">
-            <input type="hidden" asp-for="ID_Cliente" />
+            <input type="hidden" asp-for="IdCliente" />
             <a asp-action="Index" class="btn btn-outline-warning">Voltar</a>
             <input type="submit" value="Excluir" class="btn btn-outline-danger" />
         </form>

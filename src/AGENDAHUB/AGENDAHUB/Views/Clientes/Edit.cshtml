@@ -1,4 +1,4 @@
-﻿@model AGENDAHUB.Models.Clientes
+﻿@model AGENDAHUB.Models.Cliente
 <link rel="stylesheet" href="~/css/Clientes.css" asp-append-version="true" />
 
 @{
@@ -13,7 +13,7 @@
     <div class="col-md-4 text-center">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID_Cliente" />
+            <input type="hidden" asp-for="IdCliente" />
             <div class="form-group">
                 <label asp-for="Nome" class="control-label fw-bold"></label>
                 <input asp-for="Nome" class="form-control text-center" />

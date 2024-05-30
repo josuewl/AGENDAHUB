@@ -65,7 +65,7 @@ namespace AGENDAHUB.Controllers
         // Imagem
         public FileContentResult GetImg(int id)
         {
-            byte[] byteArray = _context.Usuario.Find(id).Imagem;
+            byte[] byteArray = _context.Usuarios.Find(id).Imagem;
             return byteArray != null
                 ? new FileContentResult(byteArray, "image/jpeg")
                 : null;

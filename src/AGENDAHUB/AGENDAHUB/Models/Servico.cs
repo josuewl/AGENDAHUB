@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AGENDAHUB.Models
 {
     [Table("Servicos")]
-    public class Servicos
+    public class Servico
     {
-        public Servicos()
+        public Servico()
         {
             ServicosProfissionais = new List<ServicoProfissional>();
         }
@@ -37,7 +37,7 @@ namespace AGENDAHUB.Models
         // Propriedade de navegação para Usuario
         public int UsuarioID { get; set; }
         public Usuario Usuario { get; set; }
-        public ICollection<Agendamentos> Agendamentos { get; set; }
+        public ICollection<Agendamento> Agendamento { get; set; }
     }
 }
 

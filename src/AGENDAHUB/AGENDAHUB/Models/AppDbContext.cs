@@ -1,25 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-
 namespace AGENDAHUB.Models
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Clientes> Clientes { get; set; }
-        public DbSet<Servicos> Servicos { get; set; }
-        public DbSet<Agendamentos> Agendamentos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Profissionais> Profissionais { get; set; }
+        public DbSet<Profissional> Profissionais { get; set; }
         public DbSet<Configuracao> Configuracao { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Caixa> Caixa { get; set; }
         public DbSet<ServicoProfissional> ServicoProfissional { get; set; }
 
-
-
-        //Para deixar unico o nome de usuario
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>()
@@ -32,14 +27,13 @@ namespace AGENDAHUB.Models
                 .WithOne(c => c.Usuario)
                 .HasForeignKey<Configuracao>(c => c.UsuarioID);
 
-            modelBuilder.Entity<Agendamentos>()
+            modelBuilder.Entity<Agendamento>()
                 .HasOne(a => a.Caixa)
                 .WithOne(c => c.Agendamento)
                 .HasForeignKey<Caixa>(c => c.ID_Agendamento);
 
             modelBuilder.Entity<Configuracao>()
                 .Property(c => c.DiasDaSemanaJson)
-                .HasColumnName("DiasDaSemanaJson")
                 .IsRequired();
 
             modelBuilder.Entity<Configuracao>()
@@ -58,6 +52,25 @@ namespace AGENDAHUB.Models
                 .HasOne(sp => sp.Profissional)
                 .WithMany(p => p.ServicosProfissionais)
                 .HasForeignKey(sp => sp.ID_Profissional);
+
+            // Corrigindo múltiplos caminhos de cascata removendo ou ajustando deletar em cascata
+            modelBuilder.Entity<Agendamento>()
+                .HasOne(a => a.Cliente)
+                .WithMany(c => c.Agendamento)
+                .HasForeignKey(a => a.IdCliente)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Agendamento>()
+                .HasOne(a => a.Servico)
+                .WithMany(s => s.Agendamento)
+                .HasForeignKey(a => a.IdServico)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Agendamento>()
+                .HasOne(a => a.Profissional)
+                .WithMany(p => p.Agendamento)
+                .HasForeignKey(a => a.IdProfissional)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
         }

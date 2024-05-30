@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
 namespace AGENDAHUB.Models
 {
     [Table("Caixa")]
@@ -29,7 +28,7 @@ namespace AGENDAHUB.Models
 
         // Propriedade de navegação para Agendamento
         public int? ID_Agendamento { get; set; }
-        public Agendamentos Agendamento { get; set; }
+        public Agendamento Agendamento { get; set; }
 
         public enum CategoriaMovimentacao
         {

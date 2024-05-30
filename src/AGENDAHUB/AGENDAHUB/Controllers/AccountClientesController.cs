@@ -29,7 +29,7 @@ namespace AGENDAHUB.Controllers
         }
 
         [HttpPost("AccountClientes/{UsuarioID}")]
-        public async Task<IActionResult> Login(int usuarioID, Clientes clientes)
+        public async Task<IActionResult> Login(int usuarioID, Cliente clientes)
         {
             var cliente = await _context.Clientes
                 .Include(c => c.Usuario) // Certifique-se de incluir o usuário associado ao cliente
@@ -43,7 +43,7 @@ namespace AGENDAHUB.Controllers
                 var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, cliente.CPF),
-            new Claim(ClaimTypes.NameIdentifier, cliente.ID_Cliente.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, cliente.IdCliente.ToString()),
             // Adicione outras reivindicações conforme necessário
         };
 

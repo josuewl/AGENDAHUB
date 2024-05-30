@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AGENDAHUB.Models.Clientes>
+﻿@model IEnumerable<AGENDAHUB.Models.Cliente>
 
 @{
     ViewData["Title"] = "Clientes";
@@ -77,10 +77,10 @@
                             <td>@Html.DisplayFor(modelItem => item.Observacao)</td>
                             <td>
                                 <div class="btn-group d-flex justify-content-end" role="group">
-                                    <a asp-action="Edit" asp-route-id="@item.ID_Cliente">
+                                    <a asp-action="Edit" asp-route-id="@item.IdCliente">
                                         <img class="btn btn-outline-warning" src="~/images/editar.png" alt="Editar" style="height: 2rem; width: auto" />
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@item.ID_Cliente">
+                                    <a asp-action="Delete" asp-route-id="@item.IdCliente">
                                         <img class="btn btn-outline-danger" src="~/images/excluir.png" alt="Excluir" style="height: 2rem; width: auto" />
                                     </a>
                                 </div>

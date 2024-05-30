@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -6,10 +7,10 @@ using System.Linq;
 namespace AGENDAHUB.Models
 {
     [Table("Clientes")]
-    public class Clientes
+    public class Cliente
     {
         [Key]
-        public int ID_Cliente { get; set; }
+        public int IdCliente { get; set; }
 
         [Required(ErrorMessage = "Obrigatório informar o nome!")]
         public string Nome { get; set; }
@@ -28,11 +29,13 @@ namespace AGENDAHUB.Models
         public string Observacao { get; set; }
 
         // Propriedade de navegação para Usuario
-        public int UsuarioID { get; set; }
+        public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
 
+        // Propriedade de navegação para Agendamentos
+        public ICollection<Agendamento> Agendamento { get; set; }
 
-        //Formatação de CPF e contato
+        // Formatação de CPF e contato
         public string FormatarCPF()
         {
             if (string.IsNullOrWhiteSpace(CPF))

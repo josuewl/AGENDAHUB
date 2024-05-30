@@ -38,7 +38,7 @@ namespace AGENDAHUB.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado como uma string
             if (int.TryParse(userId, out int usuarioIDInt))
             {
-                return _context.Agendamentos.Any(a => a.ID_Agendamentos == id && a.UsuarioID == usuarioIDInt);
+                return _context.Agendamentos.Any(a => a.IdAgendamento == id && a.UsuarioId == usuarioIDInt);
             }
             return false;
         }
@@ -75,7 +75,7 @@ namespace AGENDAHUB.Controllers
                         return RedirectToAction("Create", "Servicos");
                     }
                     // Manda cadastrar um cliente, depois daqui, já é possível cadastrar um agendamento.
-                    else if (!_context.Clientes.Any(cl => cl.UsuarioID == userId))
+                    else if (!_context.Clientes.Any(cl => cl.UsuarioId == userId))
                     {
                         return RedirectToAction("Create", "Clientes");
                     }
@@ -109,7 +109,7 @@ namespace AGENDAHUB.Controllers
 
                 bool configuracaoCadastrada = _context.Configuracao.Any(c => c.UsuarioID == userId);
                 bool servicoCadastrado = _context.Servicos.Any(s => s.UsuarioID == userId);
-                bool clienteCadastrado = _context.Clientes.Any(cl => cl.UsuarioID == userId);
+                bool clienteCadastrado = _context.Clientes.Any(cl => cl.UsuarioId == userId);
                 bool profissionalCadastrado = _context.Profissionais.Any(p => p.UsuarioID == userId);
 
                 return configuracaoCadastrada && servicoCadastrado && clienteCadastrado && profissionalCadastrado;
@@ -133,10 +133,10 @@ namespace AGENDAHUB.Controllers
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int usuarioIDInt))
             {
                 var agendamentos = await _context.Agendamentos
-                    .Where(a => a.UsuarioID == usuarioIDInt)
+                    .Where(a => a.UsuarioId == usuarioIDInt)
                     .Include(a => a.Cliente)
-                    .Include(a => a.Servicos)
-                    .Include(a => a.Profissionais)
+                    .Include(a => a.Servico)
+                    .Include(a => a.Profissional)
                     .ToListAsync();
 
                 var agendamentosOrdenados = agendamentos.OrderBy(a => a.Data).ToList();
@@ -149,7 +149,7 @@ namespace AGENDAHUB.Controllers
             }
             else
             {
-                return View(new List<Agendamentos>());
+                return View(new List<Agendamento>());
             }
         }
 
@@ -163,10 +163,10 @@ namespace AGENDAHUB.Controllers
                 if (string.IsNullOrEmpty(search))
                 {
                     var agendamentos = await _context.Agendamentos
-                        .Where(a => a.UsuarioID == usuarioIDInt) // Filtra por UsuarioID
+                        .Where(a => a.UsuarioId == usuarioIDInt) // Filtra por UsuarioID
                         .Include(a => a.Cliente)
-                        .Include(a => a.Servicos)
-                        .Include(a => a.Profissionais)
+                        .Include(a => a.Servico)
+                        .Include(a => a.Profissional)
                         .ToListAsync();
                     return View("Index", agendamentos);
                 }
@@ -175,25 +175,25 @@ namespace AGENDAHUB.Controllers
                     search = search.ToLower();
                     // Trazer todos os agendamentos do banco de dados
                     var agendamentos = await _context.Agendamentos
-                        .Where(a => a.UsuarioID == usuarioIDInt) // Filtra por UsuarioID
+                        .Where(a => a.UsuarioId == usuarioIDInt) // Filtra por UsuarioID
                         .Include(a => a.Cliente)
-                        .Include(a => a.Servicos)
-                        .Include(a => a.Profissionais)
+                        .Include(a => a.Servico)
+                        .Include(a => a.Profissional)
                         .ToListAsync();
 
                     // Aplicar a filtragem no lado do servidor
                     var filteredAgendamentos = await _context.Agendamentos
                         .Where(a =>
-                            a.UsuarioID == usuarioIDInt &&
+                            a.UsuarioId == usuarioIDInt &&
                             (a.Cliente.Nome.ToLower().Contains(search) ||
                             a.Data.ToString().Contains(search) ||
                             a.Hora.ToString().Contains(search) ||
-                            a.Servicos.Nome.ToLower().Contains(search) ||
-                            a.Servicos.Preco.ToString().Contains(search) ||
-                            a.Profissionais.Nome.ToLower().Contains(search)))
+                            a.Servico.Nome.ToLower().Contains(search) ||
+                            a.Servico.Preco.ToString().Contains(search) ||
+                            a.Profissional.Nome.ToLower().Contains(search)))
                         .Include(a => a.Cliente)
-                        .Include(a => a.Servicos)
-                        .Include(a => a.Profissionais)
+                        .Include(a => a.Servico)
+                        .Include(a => a.Profissional)
                         .ToListAsync();
 
                     if (filteredAgendamentos.Count == 0)
@@ -206,7 +206,7 @@ namespace AGENDAHUB.Controllers
             }
             else
             {
-                return View("Index", new List<Agendamentos>());
+                return View("Index", new List<Agendamento>());
             }
         }
 
@@ -218,7 +218,7 @@ namespace AGENDAHUB.Controllers
             if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int usuarioIDInt))
             {
                 var query = _context.Agendamentos
-                    .Where(a => a.UsuarioID == usuarioIDInt);
+                    .Where(a => a.UsuarioId == usuarioIDInt);
 
                 if (dataInicio.HasValue)
                 {
@@ -232,8 +232,8 @@ namespace AGENDAHUB.Controllers
 
                 var agendamentos = await query
                     .Include(a => a.Cliente)
-                    .Include(a => a.Servicos)
-                    .Include(a => a.Profissionais)
+                    .Include(a => a.Servico)
+                    .Include(a => a.Profissional)
                     .ToListAsync();
 
                 var agendamentosOrdenados = agendamentos.OrderBy(a => a.Data).ToList();
@@ -247,7 +247,7 @@ namespace AGENDAHUB.Controllers
             }
             else
             {
-                return View("Index", new List<Agendamentos>());
+                return View("Index", new List<Agendamento>());
             }
         }
 
@@ -336,7 +336,7 @@ namespace AGENDAHUB.Controllers
             {
                 // Obtém os horários ocupados pelos agendamentos existentes para o serviço e o profissional específicos
                 var horariosOcupados = _context.Agendamentos
-                    .Where(a => a.ID_Servico == selected_ID_Servico && a.ID_Profissional == selected_ID_Profissional && a.Status != Agendamentos.StatusAgendamento.Cancelado)
+                    .Where(a => a.IdServico == selected_ID_Servico && a.IdProfissional == selected_ID_Profissional && a.Status != Agendamento.StatusAgendamento.Cancelado)
                     .Select(a => a.Data + " " + a.Hora.ToString(@"hh\:mm"))
                     .ToList();
 
@@ -393,7 +393,7 @@ namespace AGENDAHUB.Controllers
 
             if (int.TryParse(userId, out int usuarioIDInt) && configuracao != null)
             {
-                var clientes = _context.Clientes.Where(c => c.UsuarioID == usuarioIDInt).ToList();
+                var clientes = _context.Clientes.Where(c => c.UsuarioId == usuarioIDInt).ToList();
                 var servicos = _context.Servicos.Where(s => s.UsuarioID == usuarioIDInt).ToList();
                 var profissionais = _context.Profissionais.Where(p => p.UsuarioID == usuarioIDInt).ToList();
 
@@ -418,14 +418,14 @@ namespace AGENDAHUB.Controllers
         // POST: Agendamentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Agendamento,ID_Servico,ID_Cliente,Data,Hora,Status,ID_Profissional")] Agendamentos agendamentos)
+        public async Task<IActionResult> Create([Bind("ID_Agendamento,ID_Servico,ID_Cliente,Data,Hora,Status,ID_Profissional")] Agendamento agendamentos)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var configuracao = _context.Usuarios.Include(u => u.Configuracao).FirstOrDefault(u => u.Id.ToString() == userId)?.Configuracao;
             if (int.TryParse(userId, out int usuarioIDInt))
             {
-                agendamentos.UsuarioID = usuarioIDInt; // Define o UsuarioID do agendamento como um int
-                ViewBag.Clientes = new SelectList(_context.Clientes.Where(c => c.UsuarioID == usuarioIDInt), "ID_Cliente", "Nome", "Contato");
+                agendamentos.UsuarioId = usuarioIDInt; // Define o UsuarioID do agendamento como um int
+                ViewBag.Clientes = new SelectList(_context.Clientes.Where(c => c.UsuarioId == usuarioIDInt), "ID_Cliente", "Nome", "Contato");
                 ViewBag.Servicos = new SelectList(_context.Servicos.Where(s => s.UsuarioID == usuarioIDInt), "ID_Servico", "Nome");
                 ViewBag.Profissionais = new SelectList(_context.Profissionais.Where(p => p.UsuarioID == usuarioIDInt), "ID_Profissional", "Nome");
 
@@ -452,17 +452,17 @@ namespace AGENDAHUB.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var configuracao = _context.Usuarios.Include(u => u.Configuracao).FirstOrDefault(u => u.Id.ToString() == userId)?.Configuracao;
 
-            ViewBag.UsuarioID = userId;
+            ViewBag.UsuarioId = userId;
 
             var agendamentos = await _context.Agendamentos.FindAsync(id);
 
-            if (agendamentos == null || agendamentos.UsuarioID != int.Parse(userId))
+            if (agendamentos == null || agendamentos.UsuarioId != int.Parse(userId))
             {
                 return NotFound();
             }
 
             // Filtrar clientes, serviços e profissionais pelo userId
-            var clientes = _context.Clientes.Where(c => c.UsuarioID == int.Parse(userId)).ToList();
+            var clientes = _context.Clientes.Where(c => c.UsuarioId == int.Parse(userId)).ToList();
             var servicos = _context.Servicos.Where(s => s.UsuarioID == int.Parse(userId)).ToList();
             var profissionais = _context.Profissionais.Where(p => p.UsuarioID == int.Parse(userId)).ToList();
 
@@ -482,15 +482,15 @@ namespace AGENDAHUB.Controllers
         // POST: Agendamentos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID_Agendamentos,ID_Servico,ID_Cliente,Data,Hora,Status,ID_Profissional,UsuarioID")] Agendamentos agendamentos)
+        public async Task<IActionResult> Edit(int id, [Bind("ID_Agendamentos,ID_Servico,ID_Cliente,Data,Hora,Status,ID_Profissional,UsuarioID")] Agendamento agendamentos)
         {
-            if (id != agendamentos.ID_Agendamentos)
+            if (id != agendamentos.IdAgendamento)
             {
                 return NotFound();
             }
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.UsuarioID = userId;
+            ViewBag.UsuarioId = userId;
 
             if (ModelState.IsValid)
             {
@@ -501,7 +501,7 @@ namespace AGENDAHUB.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AgendamentosExists(agendamentos.ID_Agendamentos))
+                    if (!AgendamentosExists(agendamentos.IdAgendamento))
                     {
                         return NotFound();
                     }
@@ -531,11 +531,11 @@ namespace AGENDAHUB.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Servicos)
-                .Include(a => a.Profissionais)
-                .FirstOrDefaultAsync(m => m.ID_Agendamentos == id);
+                .Include(a => a.Servico)
+                .Include(a => a.Profissional)
+                .FirstOrDefaultAsync(m => m.IdAgendamento == id);
 
             if (agendamento == null)
             {
@@ -556,11 +556,11 @@ namespace AGENDAHUB.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Profissionais)
-                .Include(a => a.Servicos)
-                .FirstOrDefaultAsync(a => a.ID_Agendamentos == id);
+                .Include(a => a.Profissional)
+                .Include(a => a.Servico)
+                .FirstOrDefaultAsync(a => a.IdAgendamento == id);
 
             if (agendamento != null)
             {
@@ -580,20 +580,20 @@ namespace AGENDAHUB.Controllers
             }
 
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Profissionais)
-                .Include(a => a.Servicos)
+                .Include(a => a.Profissional)
+                .Include(a => a.Servico)
                 .Include(a => a.Caixa)
-                .FirstOrDefaultAsync(a => a.ID_Agendamentos == id);
+                .FirstOrDefaultAsync(a => a.IdAgendamento == id);
 
             if (agendamento != null)
             {
                 var statusAntigo = agendamento.Status;
 
-                if (agendamento.Status == AGENDAHUB.Models.Agendamentos.StatusAgendamento.Concluido)
+                if (agendamento.Status == AGENDAHUB.Models.Agendamento.StatusAgendamento.Concluido)
                 {
-                    agendamento.Status = AGENDAHUB.Models.Agendamentos.StatusAgendamento.Pendente;
+                    agendamento.Status = AGENDAHUB.Models.Agendamento.StatusAgendamento.Pendente;
 
                     try
                     {
@@ -621,20 +621,20 @@ namespace AGENDAHUB.Controllers
             }
 
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Profissionais)
-                .Include(a => a.Servicos)
+                .Include(a => a.Profissional)
+                .Include(a => a.Servico)
                 .Include(a => a.Caixa)
-                .FirstOrDefaultAsync(a => a.ID_Agendamentos == id);
+                .FirstOrDefaultAsync(a => a.IdAgendamento == id);
 
             if (agendamento != null)
             {
                 var statusAntigo = agendamento.Status;
 
-                if (agendamento.Status == AGENDAHUB.Models.Agendamentos.StatusAgendamento.Concluido || agendamento.Status == AGENDAHUB.Models.Agendamentos.StatusAgendamento.Pendente)
+                if (agendamento.Status == AGENDAHUB.Models.Agendamento.StatusAgendamento.Concluido || agendamento.Status == AGENDAHUB.Models.Agendamento.StatusAgendamento.Pendente)
                 {
-                    agendamento.Status = AGENDAHUB.Models.Agendamentos.StatusAgendamento.Cancelado;
+                    agendamento.Status = AGENDAHUB.Models.Agendamento.StatusAgendamento.Cancelado;
 
                     try
                     {
@@ -662,18 +662,18 @@ namespace AGENDAHUB.Controllers
             }
 
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Profissionais)
-                .Include(a => a.Servicos)
+                .Include(a => a.Profissional)
+                .Include(a => a.Servico)
                 .Include(a => a.Caixa)
-                .FirstOrDefaultAsync(a => a.ID_Agendamentos == id);
+                .FirstOrDefaultAsync(a => a.IdAgendamento == id);
 
             if (agendamento != null)
             {
                 var status = agendamento.Status;
 
-                agendamento.Status = AGENDAHUB.Models.Agendamentos.StatusAgendamento.Concluido;
+                agendamento.Status = AGENDAHUB.Models.Agendamento.StatusAgendamento.Concluido;
 
                 try
                 {
@@ -690,34 +690,34 @@ namespace AGENDAHUB.Controllers
             return RedirectToAction("Index");
         }
 
-        private void AtualizarCaixaEGráfico(Agendamentos agendamento, Agendamentos.StatusAgendamento statusAntigo)
+        private void AtualizarCaixaEGráfico(Agendamento agendamento, Agendamento.StatusAgendamento statusAntigo)
         {
-            if (agendamento != null && agendamento.Servicos != null)
+            if (agendamento != null && agendamento.Servico != null)
             {
-                if (statusAntigo == Agendamentos.StatusAgendamento.Concluido &&
-                    (agendamento.Status == Agendamentos.StatusAgendamento.Pendente ||
-                     agendamento.Status == Agendamentos.StatusAgendamento.Cancelado))
+                if (statusAntigo == Agendamento.StatusAgendamento.Concluido &&
+                    (agendamento.Status == Agendamento.StatusAgendamento.Pendente ||
+                     agendamento.Status == Agendamento.StatusAgendamento.Cancelado))
                 {
                     RemoverDoCaixa(agendamento);
                 }
-                else if (statusAntigo != Agendamentos.StatusAgendamento.Concluido &&
-                         agendamento.Status == Agendamentos.StatusAgendamento.Concluido)
+                else if (statusAntigo != Agendamento.StatusAgendamento.Concluido &&
+                         agendamento.Status == Agendamento.StatusAgendamento.Concluido)
                 {
                     AdicionarAoCaixa(agendamento);
                 }
             }
         }
 
-        private void AdicionarAoCaixa(Agendamentos agendamento)
+        private void AdicionarAoCaixa(Agendamento agendamento)
         {
             var caixaEntrada = new Caixa
             {
                 Categoria = Caixa.CategoriaMovimentacao.Entrada,
-                Descricao = $"Pagamento pelo serviço: \"{agendamento.Servicos.Nome}\"",
-                Valor = agendamento.Servicos.Preco,
+                Descricao = $"Pagamento pelo serviço: \"{agendamento.Servico.Nome}\"",
+                Valor = agendamento.Servico.Preco,
                 Data = agendamento.Data,
-                ID_Agendamento = agendamento.ID_Agendamentos,
-                UsuarioID = agendamento.UsuarioID
+                ID_Agendamento = agendamento.IdAgendamento,
+                UsuarioID = agendamento.UsuarioId
             };
 
             _context.Caixa.Add(caixaEntrada);
@@ -742,20 +742,20 @@ namespace AGENDAHUB.Controllers
             }
 
             var agendamento = await _context.Agendamentos
-                .Where(a => a.UsuarioID == int.Parse(userId))
+                .Where(a => a.UsuarioId == int.Parse(userId))
                 .Include(a => a.Cliente)
-                .Include(a => a.Profissionais)
-                .Include(a => a.Servicos)
+                .Include(a => a.Profissional)
+                .Include(a => a.Servico)
                 .Include(a => a.Caixa)
-                .FirstOrDefaultAsync(a => a.ID_Agendamentos == id);
+                .FirstOrDefaultAsync(a => a.IdAgendamento == id);
 
             if (agendamento != null)
             {
                 var statusAntigo = agendamento.Status;
 
-                if (agendamento.Status == AGENDAHUB.Models.Agendamentos.StatusAgendamento.Concluido)
+                if (agendamento.Status == AGENDAHUB.Models.Agendamento.StatusAgendamento.Concluido)
                 {
-                    agendamento.Status = AGENDAHUB.Models.Agendamentos.StatusAgendamento.Pendente;
+                    agendamento.Status = AGENDAHUB.Models.Agendamento.StatusAgendamento.Pendente;
 
                     try
                     {
@@ -773,10 +773,10 @@ namespace AGENDAHUB.Controllers
             return RedirectToAction("Index");
         }
 
-        private void RemoverDoCaixa(Agendamentos agendamento)
+        private void RemoverDoCaixa(Agendamento agendamento)
         {
             var caixaEntrada = _context.Caixa
-                .FirstOrDefault(c => c.ID_Agendamento == agendamento.ID_Agendamentos);
+                .FirstOrDefault(c => c.ID_Agendamento == agendamento.IdAgendamento);
 
             if (caixaEntrada != null)
             {
@@ -785,7 +785,7 @@ namespace AGENDAHUB.Controllers
                 try
                 {
                     _context.SaveChanges();
-                    Console.WriteLine($"Registro do Caixa removido para o agendamento: {agendamento.ID_Agendamentos}");
+                    Console.WriteLine($"Registro do Caixa removido para o agendamento: {agendamento.IdAgendamento}");
                 }
                 catch (Exception ex)
                 {

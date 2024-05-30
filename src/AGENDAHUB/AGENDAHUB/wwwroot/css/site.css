@@ -2,14 +2,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+
 }
 
 header {
-  
-    height: 15vh;
+    position: fixed;
+    height: 80px;
     background: rgb(208, 208, 208);
     background: linear-gradient(90deg, rgba(208, 208, 208, 1) 0%, rgba(13, 202, 240, 1) 100%);
     align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
    
 }
 
@@ -42,6 +49,20 @@ header {
    
 }
 
+.fixed-menu {
+    position: fixed;
+    padding-top: 10px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 6rem; /* Largura do menu */
+    background-color: #fff; /* Cor de fundo */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
+    z-index: 1030; /* Certifique-se de que o menu fique acima do conteúdo principal */
+    overflow-y: auto; /* Adicionar rolagem vertical, se necessário */
+}
+
+
 
 main {
     min-height: 70vh;
@@ -68,6 +89,8 @@ main {
     opacity: 1;
 }
 
+
+
 #openMenu {
     width: 2rem;
     height: 2rem;
@@ -93,9 +116,15 @@ main {
     overflow: hidden;
 }
 
-    .contentMenu li, #menuUser {
-        list-style: none;
-    }
+.contentMenuTwo {
+    height: 20vh;
+    padding: 10px 0;
+    overflow: hidden;
+}
+
+.contentMenu, .contentMenuTwo li, #menuUser {
+    list-style: none;
+}
 
     .contentMenu a, #menuUser {
         text-decoration: none;
@@ -106,14 +135,35 @@ main {
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-        .contentMenu a:hover {
-            background-color: #f8f8f8;
-            color: #007BFF;
+    .content-area {
+            margin-top: 100px;
+            margin-left: 100px; /* Largura do menu lateral */
+            padding: 20px;
         }
 
-    .contentMenu img {
-        margin-right: 10px;
+.contentMenuTwo a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .contentMenu a:hover {
+        background-color: #f8f8f8;
+        color: #007BFF;
     }
+
+   
+
+
+
+.icon-large {
+    font-size: 2rem;
+    color: #000000;
+}
+
 
 .nav_name {
     font-weight: bold;

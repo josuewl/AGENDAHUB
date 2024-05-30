@@ -60,7 +60,7 @@ namespace AGENDAHUB.Controllers
         // POST: Profissionais/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Profissional,Nome,Cargo,Telefone,Email,Senha,Login,CPF")] Profissionais profissionais)
+        public async Task<IActionResult> Create([Bind("ID_Profissional,Nome,Cargo,Telefone,Email,Senha,Login,CPF")] Profissional profissionais)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
             profissionais.UsuarioID = int.Parse(userId); // Define o UsuarioID do profissional
@@ -115,7 +115,7 @@ namespace AGENDAHUB.Controllers
         // POST: Profissionais/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Profissionais profissionais)
+        public async Task<IActionResult> Edit(int id, Profissional profissionais)
         {
             if (id != profissionais.ID_Profissional)
             {

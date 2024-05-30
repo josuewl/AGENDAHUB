@@ -23,7 +23,7 @@ namespace AGENDAHUB.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
             var clientes = await _context.Clientes
-                .Where(c => c.UsuarioID == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
+                .Where(c => c.UsuarioId == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
                 .ToListAsync();
 
             if (clientes == null)
@@ -42,10 +42,10 @@ namespace AGENDAHUB.Controllers
 
         // Resposta HTTP para adicionar um cliente cadastrado no banco de dados e redirecionar para a View
         [HttpPost]
-        public async Task<IActionResult> Create(Clientes cliente)
+        public async Task<IActionResult> Create(Cliente cliente)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
-            cliente.UsuarioID = int.Parse(userId); // Define o UsuarioID do cliente
+            cliente.UsuarioId = int.Parse(userId); // Define o UsuarioID do cliente
 
             // Verifica se o CPF já está cadastrado
             if (_context.Clientes.Any(c => c.CPF == cliente.CPF))
@@ -72,8 +72,8 @@ namespace AGENDAHUB.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
             var cliente = await _context.Clientes
-                .Where(c => c.UsuarioID == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
-                .FirstOrDefaultAsync(c => c.ID_Cliente == id);
+                .Where(c => c.UsuarioId == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
+                .FirstOrDefaultAsync(c => c.IdCliente == id);
 
             if (cliente == null)
             {
@@ -84,13 +84,13 @@ namespace AGENDAHUB.Controllers
 
         // Resposta HTTP para alterar um cliente cadastrado no banco de dados e redirecionar para a View
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Clientes cliente)
+        public async Task<IActionResult> Edit(int id, Cliente cliente)
         {
-            if (id != cliente.ID_Cliente)
+            if (id != cliente.IdCliente)
                 return NotFound();
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
-            cliente.UsuarioID = int.Parse(userId); // Define o UsuarioID do cliente
+            cliente.UsuarioId = int.Parse(userId); // Define o UsuarioID do cliente
 
             if (ModelState.IsValid)
             {
@@ -109,8 +109,8 @@ namespace AGENDAHUB.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
             var cliente = await _context.Clientes
-                .Where(c => c.UsuarioID == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
-                .FirstOrDefaultAsync(c => c.ID_Cliente == id);
+                .Where(c => c.UsuarioId == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
+                .FirstOrDefaultAsync(c => c.IdCliente == id);
 
             if (cliente == null)
                 return NotFound();
@@ -127,8 +127,8 @@ namespace AGENDAHUB.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Obtém o ID do usuário logado
             var cliente = await _context.Clientes
-                .Where(c => c.UsuarioID == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
-                .FirstOrDefaultAsync(c => c.ID_Cliente == id);
+                .Where(c => c.UsuarioId == int.Parse(userId)) // Restringe os clientes pelo UsuarioID
+                .FirstOrDefaultAsync(c => c.IdCliente == id);
 
             if (cliente == null)
                 return NotFound();

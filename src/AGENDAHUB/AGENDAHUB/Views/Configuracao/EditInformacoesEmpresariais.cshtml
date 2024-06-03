@@ -3,87 +3,85 @@
 <link rel="stylesheet" href="~/css/Configuracao.css" asp-append-version="true" />
 
 @{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
     ViewData["Title"] = "Informações Empresariais";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="container">
-
-                <a asp-controller="Account" asp-action="Index" class="btn btn-outline-info" id="btnNovoUsuario">Cadastrar Usuario</a>
-                <br />
-                <a asp-controller="Profissionais" asp-action="Index" class="btn btn-outline-info mt-2" id="btnNovoProfissional">Cadastrar Profissional</a>
-
-                <ul class="contentMenu">
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial active" asp-area="" asp-controller="Configuracao" asp-action="Edit" asp-route-section="InformacoesCadastrais">
-                            Informações Cadastrais
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="EditInformacoesEmpresariais" asp-route-section="InformacoesEmpresariais">
-                            Informações Empresariais
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="EditInforAtendimento" asp-route-section="EditInforAtendimento">
-                            Informações de Atendimento
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-4">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
             <h2 class="text-center">Configurações da Empresa</h2>
 
-            <form asp-action="EditInformacoesEmpresariais" asp-controller="Configuracao" method="post">
+            <form asp-action="EditInformacoesEmpresariais" asp-controller="Configuracao" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label asp-for="Imagem" class="control-label"></label>
+                    @if (ViewBag.HasExistingImage ?? false)
+                    {
+                        <div class="card-image" style="text-align: center; margin-bottom: 3%">
+                            <img id="existingImage" style="width: 10rem; height: 11rem; border-radius: 0.7rem;" src="data:image;base64,@Convert.ToBase64String(Model.Imagem)" alt="Imagem Atual" />
+                        </div>
+                        <input asp-for="Imagem" type="file" class="form-control" onchange="previewImage(this)" placeholder="Alterar imagem" />
+                        <span asp-validation-for="Imagem" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <a asp-action="CreateImg" asp-controller="Configuracao">Cadastrar imagem</a>
+                    }
+                </div>
+
+                @if (ViewBag.HasExistingImage ?? false)
+                {
+                    <form method="post" asp-action="RemoveImg" asp-controller="Configuracao">
+                        <button type="submit" class="btn btn-outline-danger w-100">Remover Imagem</button>
+                    </form>
+                }
+
+                <script>
+                    function previewImage(input) {
+                        var existingImage = document.getElementById('existingImage');
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                existingImage.src = e.target.result;
+                            };
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                </script>
 
                 <div class="form-group pt-2">
                     <label asp-for="NomeEmpresa" class="pt-2">Nome da Empresa</label>
                     <div class="pt-2">
-                        <input asp-for="NomeEmpresa" class="form-control" placeholder="Ex: Barbearia do Joaquim, Barbershop LTDA..."/>
+                        <input asp-for="NomeEmpresa" class="form-control" placeholder="Ex: Barbearia do Joaquim, Barbershop LTDA..." />
                         <span asp-validation-for="NomeEmpresa" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group pt-2">
-                    <label asp-for="Cnpj" class="pt-2"></label>
+                    <label asp-for="Cnpj" class="pt-2">CNPJ</label>
                     <div class="pt-2">
-                        <input asp-for="Cnpj" class="form-control" value="@Model.FormatarCNPJ()" placeholder="00.000.000/000-00"/>
+                        <input asp-for="Cnpj" class="form-control" value="@Model?.FormatarCNPJ()" placeholder="00.000.000/0000-00" />
                         <span asp-validation-for="Cnpj" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="form-group pt-2">
-                    <label asp-for="Endereco" class="pt-2"></label>
+                    <label asp-for="Endereco" class="pt-2">Endereço</label>
                     <div class="pt-2">
                         <input asp-for="Endereco" class="form-control" />
                         <span asp-validation-for="Endereco" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="form-group pt-2">
-                    <label asp-for="Email" class="pt-2"></label>
-                    <div class="pt-2">
-                        <input asp-for="Email" class="form-control"/>
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                </div>
-
                 <div class="text-center">
                     <div class="form-group pt-4">
                         <button type="submit" class="btn btn-outline-info">Salvar</button>
-                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model?.ID_Configuracao">
-                            Excluir
-                        </a>
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model?.ID_Configuracao">Excluir</a>
                     </div>
                 </div>
             </form>
-
         </div>
-
     </div>
 </div>

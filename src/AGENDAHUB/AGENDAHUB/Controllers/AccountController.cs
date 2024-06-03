@@ -28,7 +28,7 @@ namespace AGENDAHUB.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == int.Parse(userId));
 
-            byte[] byteArray = usuario?.Imagem;
+            byte[] byteArray = usuario.Configuracao?.Imagem;
 
             if (byteArray != null && byteArray.Length > 0)
             {
@@ -277,7 +277,7 @@ namespace AGENDAHUB.Controllers
                 return NotFound();
             }
 
-            ViewBag.HasExistingImage = (usuario.Imagem != null && usuario.Imagem.Length > 0);
+            ViewBag.HasExistingImage = (usuario.Configuracao.Imagem != null && usuario.Configuracao.Imagem.Length > 0);
 
             return View(usuario);
         }

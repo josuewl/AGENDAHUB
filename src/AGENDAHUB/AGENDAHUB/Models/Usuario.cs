@@ -26,7 +26,6 @@ namespace AGENDAHUB.Models
 
         [Required(ErrorMessage = "Obrigatório informar o perfil")]
         public Perfil Perfil { get; set; }
-        public byte[] Imagem { get; set; }
 
         public Configuracao Configuracao { get; set; } // Propriedade de navegação para a configuração
         public Profissional Profissionais { get; set; } // Propriedade de navegação para a configuração

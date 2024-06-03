@@ -6,19 +6,41 @@
 
 }
 
+
+
 header {
     position: fixed;
-    height: 80px;
-    background: rgb(208, 208, 208);
-    background: linear-gradient(90deg, rgba(208, 208, 208, 1) 0%, rgba(13, 202, 240, 1) 100%);
-    align-items: center;
+    height: auto;
+    min-height: 80px;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
 }
-   
+
+.navbar {
+    background: linear-gradient(90deg, rgba(208, 208, 208, 1) 0%, rgba(13, 202, 240, 1) 100%);
+    padding: 10px 0; /* Adicionei um padding para espaçar os elementos */
+    min-height: 80px;
+    padding-left: 5px;
+    padding-right: 40px;
+    
 }
+
+.navbar-brand {
+    margin-right: auto; /* Mantém a logo à esquerda */
+    margin-left: 12px;
+    background: #f8f8f8;
+    width: 65px; /* Defina o mesmo valor para largura e altura para fazer um círculo */
+    height: 65px;
+    
+}
+
+
+
+
+
+
 
 ::-webkit-scrollbar {
     width: 10px; /* Largura da barra de rolagem */
@@ -26,7 +48,7 @@ header {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color:rgb(208, 208, 208); ; /* Cor da parte arrastável da barra de rolagem */
+    background-color:rgb(208, 208, 208); /* Cor da parte arrastável da barra de rolagem */
     border-radius: 5px; /* Raio dos cantos da parte arrastável */
 }
 
@@ -45,9 +67,23 @@ header {
 
 .navbar-brand {
     position:absolute;
-    margin-left:65px;
+    left: 0;
    
 }
+
+.nav_link_1 {
+    margin-top: 25px;
+}
+
+.nav-link {
+    margin-top: 25px;
+}
+
+
+.offcanvas-body {
+    margin-top:50px;
+}
+
 
 .fixed-menu {
     position: fixed;
@@ -55,11 +91,16 @@ header {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 6rem; /* Largura do menu */
+    width: 15rem; /* Largura do menu */
     background-color: #fff; /* Cor de fundo */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra */
-    z-index: 1030; /* Certifique-se de que o menu fique acima do conteúdo principal */
+    z-index: 1050; /* Certifique-se de que o menu fique acima do conteúdo principal */
     overflow-y: auto; /* Adicionar rolagem vertical, se necessário */
+}
+
+.fixed-menu-secondary {
+    height: 100vh;
+    margin-left: 100px;
 }
 
 
@@ -89,6 +130,23 @@ main {
     opacity: 1;
 }
 
+.contentMenu a,
+.contentMenu2 a,
+.contentMenuTwo a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease; /* Ajuste a velocidade da transição aqui */
+}
+
+    .contentMenu a:hover,
+    .contentMenu2 a:hover,
+    .contentMenuTwo a:hover {
+        background-color: #f8f8f8;
+        color: #007BFF;
+    }
 
 
 #openMenu {
@@ -110,21 +168,40 @@ main {
     width: 13rem;
 }
 
+.card-collapse {
+    background-color: #f8f9fa;
+    border: none;
+}
+
 .contentMenu {
-    height: 60vh;
     padding: 10px 0;
     overflow: hidden;
+}
+
+
+.contentMenu2 {
+
+    padding: 0 5px;
+    overflow: hidden;
+}
+
+    ul {
+        margin-bottom:0;
+    }
+
+.card-body {
+    padding: 0;
+
 }
 
 .contentMenuTwo {
-    height: 20vh;
     padding: 10px 0;
     overflow: hidden;
 }
 
-.contentMenu, .contentMenuTwo li, #menuUser {
-    list-style: none;
-}
+    .contentMenu, .contentMenuTwo li, #menuUser, .contentMenu2 li {
+        list-style: none;
+    }
 
     .contentMenu a, #menuUser {
         text-decoration: none;
@@ -135,11 +212,20 @@ main {
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .content-area {
-            margin-top: 100px;
-            margin-left: 100px; /* Largura do menu lateral */
-            padding: 20px;
-        }
+.contentMenu2 a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.content-area {
+    margin-top: 100px;
+    margin-left: 15rem; /* Largura do menu lateral */
+    padding: 20px;
+}
 
 .contentMenuTwo a {
     text-decoration: none;
@@ -167,6 +253,7 @@ main {
 
 .nav_name {
     font-weight: bold;
+    margin-left:10px;
 }
 
 .footerMenu {

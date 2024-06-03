@@ -15,81 +15,126 @@
 
 <body>
 
-    @* Header Logo + botão Menu *@
-   
-<header>
-        <nav class="navbar bg-body-tertiary align-items-center">
-            <div class="container-fluid d-flex justify-content-between mt-4">
-                <a class="navbar-brand" href="#">
-                    <img src="~/images/logoAgendaHub.png" alt="Logo" class="imgLogo img-fluid" style="max-height: 50px;">
-                </a>
-                <div class="d-flex align-items-center ms-auto">
+
+    <header>
+        <nav class="navbar bg-body-tertiary container-fluid">
+            <a class="navbar-brand me-auto" href="#">
+                <img src="~/images/logoAgendaHubIcon2.png" alt="Logo" class="imgLogo img-fluid" style="max-height: 45px;">
+            </a>
+           
+                
+                <div class="ms-auto">
                     @{
-                        var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
-                        var imgSrc = Url.Action("GetImg", "Account", new { id = userId });
+                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var imgSrc = Url.Action("GetImg", "Configuracao", new { id = userId });
                     }
-                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="link-dark text-decoration-none" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                         @if (!string.IsNullOrEmpty(imgSrc))
                         {
-                            <img src="@imgSrc" alt="Imagem do Usuário" width="43" height="43" class="rounded-circle me-2"> <strong> Olá, @User.Identity.Name</strong>
+                            <img src="@imgSrc" alt="Imagem do Usuário" width="43" height="43" class="rounded-circle me-2"> <strong>@User.Identity.Name</strong>
                         }
                         else
                         {
-                            <img src="~/images/logoAgendaHub.png" alt="Logo AgendaHub" width="43" height="43" class="rounded-circle me-2">  <strong>@User.Identity.Name</strong>
+                        <i class="bi bi-person-circle"
+                        alt = "Logo AgendaHub" width = "43" height = "43" class="rounded-circle me-2">
+                           
+                        </i>
+
+                        <strong>@User.Identity.Name</strong>
                         }
                     </a>
                 </div>
-            </div>
+         
         </nav>
     </header>
 
 
 
+
+
     <!-- Menu Lateral -->
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-1 bg-light fixed-menu" style="width: 100px;">
-                <div class="menu-header d-flex justify-content-initial">
-                    <img src="~/images/logoAgendaHubIcon2.png" alt="Logo" style="width: 4.5rem; height: 3rem;" class="imgLogoOfCanvas">
+        <div class="row-menu">
+            <div class="col-lg-1 bg-light fixed-menu">
+                <div class="menu-header d-flex justify-content-initial icon">
+                    <a class="navbar-brand me-auto" href="#">
+                        <img src="~/images/logoAgendaHubIcon2.png" alt="Logo" class="imgLogo img-fluid" style="max-height: 45px;">
+                    </a>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="contentMenu">
-                        <li>
-                            <a class="nav_link" style="width: 2rem; height: 2rem;" asp-area="" asp-controller="Agendamentos" asp-action="Index">
+                        <li class="nav-item">
+                            <a class="nav_link_1" style="width: 2rem; height: 2rem;" asp-area="" asp-controller="Agendamentos" asp-action="Index">
                                 <img src="~/images/calendario.png" style="width: 2rem; height: 2rem;" alt="calendar-icon" />
+                                <span class="nav_name">Agendamentos</span>
                             </a>
                         </li>
                         <li>
                             <a class="nav_link" asp-area="" asp-controller="Caixa" asp-action="Index">
                                 <img src="~/images/caixa.png" style="width: 2rem; height: 2rem;" alt="finance-icon" />
+                                <span class="nav_name">Financeiro</span>
                             </a>
                         </li>
                         <li>
                             <a class="nav_link" asp-area="" asp-controller="Clientes" asp-action="Index">
                                 <img src="~/images/clientes.png" style="width: 2rem; height: 2rem;" alt="client-icon" />
+                                <span class="nav_name">Clientes</span>
                             </a>
                         </li>
                         <li>
                             <a class="nav_link" asp-area="" asp-controller="Servicos" asp-action="Index">
                                 <img src="~/images/serviços.png" style="width: 2rem; height: 2rem;" alt="services-icon" />
+                                <span class="nav_name">Serviços</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" style="width: 2rem; height: 2rem;" data-bs-toggle="collapse" href="#collapseConfig" role="button" aria-expanded="false" aria-controls="collapseConfig">
+                                <img src="~/images/config.png" style="width: 2rem; height: 2rem;">
+                                <span class="nav_name">Configurações</span>
                             </a>
                         </li>
                     </ul>
+                  
+                    <div class="collapse" id="collapseConfig">
+                        <div class="card-collapse card-body">
+                            <ul class="contentMenu2">
+                                <li>
+                                    <a class="nav-link" style="width: 2rem; height: 2rem;" asp-area="" asp-controller="Configuracao" asp-action="Index">
+                                        <i class="bi bi-file-earmark-text icon-large"></i>
+                                        <span class="nav_name">Dados Cadastrais</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Index">
+                                        <i class="bi bi-person-badge icon-large"></i>
+                                        <span class="nav_name">Usuários Cadastrados</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-area="" asp-controller="Profissionais" asp-action="Index">
+                                        <i class="bi bi-person-vcard-fill icon-large"></i>
+                                        <span class="nav_name">Profissionais Cadastrados</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <ul class="contentMenuTwo">
-                    <hr class="dropdown-divider">
+                    <hr class="dropdown-divider"/>
                     <!-- Segunda linha alinhada com a parte inferior / User Menu -->
 
 
-                        <li>
-                        <a class="nav-link" asp-area="" asp-controller="Configuracao" asp-action="Edit">
-                            <img src="~/images/config.png" style="width: 2rem; height: 2rem;">
-                        </a>
-                        </li>
+
+                       
+                   
                         <li>
                         <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">
                                 <i class="bi bi-box-arrow-left icon-large"></i>
+                                <span class="nav_name">Sair</span>
                         </a>
                         </li>
+
+                       
                    
                     </ul>
 
@@ -103,7 +148,8 @@
                     @RenderBody()
                 </main>
             </div>
-
+            </div>
+            </div>
     @* Footer
     <footer class="border-top footer text-center text-black pt-4">
         <div class="container">

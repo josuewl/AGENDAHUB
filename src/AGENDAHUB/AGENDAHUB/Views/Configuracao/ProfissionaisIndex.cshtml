@@ -2,6 +2,10 @@
 
 <link rel="stylesheet" href="~/css/Configuracao.css" asp-append-version="true" />
 
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+}
 
 @{
     ViewData["Title"] = "Profissionais Cadastrados";
@@ -31,7 +35,7 @@
 <a class="btn btn-outline-info" asp-action="Create" id="btnNovoProfissional">+Novo Profissional</a>
 
 <div class="container d-flex justify-content-center col-xl-12 col-12">
-    
+   
     <div class="table-responsive-lg p-3">
         <table id="tabelaProfissionais" class="table table-hover mt-3 mx-auto" style="width:100%">
             <thead>

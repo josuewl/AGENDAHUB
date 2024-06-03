@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace AGENDAHUB.Models
 {
     public class ConfiguracaoUsuarioViewModel
     {
 
-        public IEnumerable<Configuracao> Configuracao { get; set; }
-        public IEnumerable<Usuario> Usuario { get; set; }
+        public Usuario Usuario { get; set; }
+        public Configuracao Configuracao { get; set; }
+
+        public IFormFile Imagem { get; set; }
     }
 }

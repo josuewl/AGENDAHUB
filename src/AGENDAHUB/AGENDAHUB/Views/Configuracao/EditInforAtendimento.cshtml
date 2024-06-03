@@ -3,41 +3,19 @@
 <link rel="stylesheet" href="~/css/Configuracao.css" asp-append-version="true" />
 
 @{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+@{
     ViewData["Title"] = "Informações de Atendimento";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="container">
+<div class="container-fluid">
+    <div class="row justify-content-center">
 
-                <a asp-controller="Account" asp-action="Index" class="btn btn-outline-info" id="btnNovoUsuario">Cadastrar Usuario</a>
-                <br />
-                <a asp-controller="Profissionais" asp-action="Index" class="btn btn-outline-info mt-2" id="btnNovoProfissional">Cadastrar Profissional</a>
-
-                <ul class="contentMenu">
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial active" asp-area="" asp-controller="Configuracao" asp-action="Edit" asp-route-section="InformacoesCadastrais">
-                            Informações Cadastrais
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="EditInformacoesEmpresariais" asp-route-section="InformacoesEmpresariais">
-                            Informações Empresariais
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="EditInforAtendimento" asp-route-section="EditInforAtendimento">
-                            Informações de Atendimento
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-
-            <form asp-action="EditInforAtendimento" asp-controller="Configuracao" method="post">
+        <!-- Conteúdo Principal Centralizado -->
+        <div class="col-md-6">
+            <form asp-action="EditDiasAtendimento" asp-controller="Configuracao" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group">
@@ -81,8 +59,6 @@
                     </div>
                 </div>
             </form>
-
         </div>
-
     </div>
 </div>

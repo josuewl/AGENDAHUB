@@ -25,12 +25,12 @@
             </dl>
 
             <div class="form-group">
-                <label asp-for="Imagem" class="control-label"></label>
+                <label asp-for="Configuracao.Imagem" class="control-label"></label>
 
                 @if (ViewBag.HasExistingImage)
                 {
                     <div class="card-image" style="text-align: center; margin-bottom: 3%">
-                        <img id="existingImage" style="width: 10rem; height: 11rem; border-radius: 0.7rem;" src="data:image;base64,@Convert.ToBase64String(Model.Imagem)" alt="Imagem Atual" />
+                        <img id="existingImage" style="width: 10rem; height: 11rem; border-radius: 0.7rem;" src="data:image;base64,@Convert.ToBase64String(Model.Configuracao.Imagem)" alt="Imagem Atual" />
                     </div>
                 }
             </div>

@@ -2,39 +2,34 @@
 }
 
 #btnNovoAgendamento, #dataInicio, #dataFim, #btnStatusAgendamento, #cadastrarAgendamento, select, #statusFilter, #modalAgendamento {
-    -webkit-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    -moz-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
     border-radius: 20px;
 }
 
+#btnNovoAgendamento {
+    color: black;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+}
+
+label {
+    font-weight: 500;
+}
+
 #pesquisar, #dataFim {
-    -webkit-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    -moz-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
     border-radius: 20px 0 0 20px;
+    border: 1px solid #ced4da;
 }
 
 #botaoPesquisar {
-    -webkit-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    -moz-box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
-    box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
+    background-color: #fff;
     border-radius: 0 20px 20px 0;
+    border: 1px solid #ced4da;
 }
 
 #dropdownStatus {
     border-radius: 20px;
 }
 
-#dataInicio {
-    width: auto;
-    height: 2.5rem
-}
-
-#dataFim {
-    width: auto;
-    height: 2.5rem
-}
 
 #pesquisarDiv {
     width: 15rem;
@@ -64,6 +59,29 @@
     padding-top: 0.46rem;
 }
 
+h1, h2, h3, h4, h5, h6, p, a, span, div {
+    font-family: 'Inter', sans-serif;
+}
+
+.header-agendamento {
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    background-color: #22caec;
+    box-shadow: -8px 7px 10px 0px rgba(171,169,171,0.29);
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: 600;
+    text-size-adjust: 100%;
+}
+
 /* Estilização para os campos de entrada de data */
 input[type="date"] {
     width: 100%;
@@ -85,6 +103,6 @@ input[type="date"] {
     border-radius: 0.25rem;
 }
 
-.dropdown-menu{
-    min-width: 5.9rem
+.dropdown-menu {
+    min-width: 5.9rem;
 }

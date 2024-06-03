@@ -33,6 +33,7 @@
     <Compile Remove="Models\UserAuthentication.cs" />
     <Compile Remove="Views\Account\NovoUsuario.cs" />
     <Compile Remove="Views\AgendamentosClientes\Create.cshtml.cs" />
+    <Compile Remove="Views\Configuracao\Index.cshtml.cs" />
     <Compile Remove="Views\Home\Caixa.cshtml.cs" />
     <Compile Remove="Views\Home\Index.cshtml.cs" />
   </ItemGroup>
@@ -40,7 +41,7 @@
   <ItemGroup>
     <Content Remove="Models\UsuarioConfiguracaoViewModel.cshtml" />
     <Content Remove="Views\Account\Details.cshtml" />
-    <Content Remove="Views\Configuracao\Index.cshtml" />
+    <Content Remove="Views\Configuracao\ProfissionaisIndex.cshtml" />
     <Content Remove="Views\Home\Caixa.cshtml" />
     <Content Remove="Views\Home\Clientes.cshtml" />
     <Content Remove="Views\Home\Configurações.cshtml" />

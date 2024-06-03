@@ -1,84 +1,187 @@
-﻿@* @model AGENDAHUB.Models.ConfiguracaoUsuarioViewModel
+﻿@model AGENDAHUB.Models.ConfiguracaoUsuarioViewModel
 
 <link rel="stylesheet" href="~/css/Configuracao.css" asp-append-version="true" />
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 @{
-    ViewData["Title"] = "Configurações";
+    ViewData["Title"] = "Informações Cadastrais";
 }
 
-<h1 class="text-center">Configurações</h1>
+<div class="container-fluid background-dados-cadastrais">
+   
+    <div>
+        <!-- Formulário para editar informações empresariais -->
+        <div class="col-lg-6 mb-4  form-dados-cadastrais">
+           <label class="control-label  pt-2 m-3" style="font-size: 1.25rem; font-weight: bold; color: #007bff;">
+                <i class="bi bi-briefcase-fill" style="margin-right: 0.5rem;"></i> Company
+                    </label>
+            <form asp-action="EditInformacoesEmpresariais" asp-controller="Configuracao" method="post" enctype="multipart/form-data">
+            
 
-<div class="row d-flex justify-content-center">
-    <div class="row">
-        <div class="col-md-7 order-md-2">
-            <div id="sectionContainer">
-                <!-- Conteúdo específico da seção -->
-            </div>
+                <div class="form-group">
+                    @if (ViewBag.HasExistingImage ?? false)
+                    {
+                        <div class="card-image text-center mb-3">
+                            <img id="existingImage" class="card-image-src" style="width: 13rem; height: 13rem;" src="data:image;base64,@Convert.ToBase64String(Model.Configuracao.Imagem)" alt="Imagem Atual" />
+                        </div>
+                        <div class="input-group mt-3 justify-content-center">
+                            <label class="input-group-text" for="imagemInput">Atualizar Imagem Brand</label>
+                            <input id="imagemInput" asp-for="Imagem" type="file" class="form-control" onchange="previewImage(this)" style="display: none;" />
+                            <span class="input-group-text"><i class="bi bi-upload"></i></span>
+                        </div>
+                        <span asp-validation-for="Imagem" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <a asp-action="CreateImg" asp-controller="Configuracao">Cadastrar imagem</a>
+                    }
+                </div>
+
+
+                <div class="form-group m-3">
+                    <label asp-for="Configuracao.NomeEmpresa" class="pt-2">Razão Social</label>
+                    <input asp-for="Configuracao.NomeEmpresa" class="form-control" placeholder="Ex: Barbearia do Joaquim, Barbershop LTDA..." />
+                    <span asp-validation-for="Configuracao.NomeEmpresa" class="text-danger"></span>
+                </div>
+
+                <div class="form-group m-3">
+                    <label asp-for="Configuracao.Cnpj">Cnpj</label>
+                    <input asp-for="Configuracao.Cnpj" class="form-control" value="@Model?.Configuracao?.FormatarCNPJ()" placeholder="00.000.000/0000-00" />
+                    <span asp-validation-for="Configuracao.Cnpj" class="text-danger"></span>
+                </div>
+
+                <div class="form-group m-3">
+                    <label asp-for="Configuracao.Email">E-mail comercial</label>
+                    <input asp-for="Configuracao.Email" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="Configuracao.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group m-3">
+                    <label asp-for="Configuracao.Endereco">Endereço comercial</label>
+                    <input asp-for="Configuracao.Endereco" class="form-control" />
+                    <span asp-validation-for="Configuracao.Endereco" class="text-danger"></span>
+                </div>
+
+                <div class="text-center mb-5">
+                    <div class="form-group pt-4">
+                        <button type="submit" class="btn btn-primary">SALVAR ALTERAÇÕES</button>
+                       
+                    </div>
+                </div>
+            </form>
         </div>
 
-        <div class="col-md-5 order-md-1">
-            <div class="container">
-                <a asp-controller="Profissionais" asp-action="Index" class="btn btn-outline-info">Cadastrar Usuario</a>
-                <ul class="contentMenu">
-                    <li>
-                        <a class="nav_link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="Edit" asp-route-section="InformacoesCadastrais">
-                            Informações Cadastrais
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav_link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="EditInformacoesEmpresariais" asp-route-section="InformacoesEmpresariais">
-                            Informações Empresariais
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav_link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="Edit" asp-route-section="InformacoesBancarias">
-                            Informações Bancarias
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav_link form-Partial" asp-area="" asp-controller="Configuracao" asp-action="Edit" asp-route-section="InformacoesAtendimento">
-                            Informações de Atendimento
-                        </a>
-                    </li>
-                </ul>
+        <!-- Dias de Atendimento -->
+        <div class="col-lg-6 mb-4 diasAtendimento">
+
+            <form asp-action="EditDiasAtendimento" asp-controller="Configuracao" method="post" class="m-4">
+                <div class="row">
+                    <!-- Dias de Atendimento -->
+                    <label class="control-label  pt-2" style="font-size: 1.25rem; font-weight: bold; color: #007bff;">
+                        <i class="bi bi-calendar-check" style="margin-right: 0.5rem;"></i> Dias de atendimento
+                    </label>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <br />
+                            @for (int i = 0; i < Enum.GetValues(typeof(DiasAtendimento)).Length; i++)
+                            {
+                                var dia = (DiasAtendimento)i;
+                                <div class="form-check">
+                                    <input type="checkbox" name="Configuracao.DiaAtendimento" value="@dia" @(Model?.Configuracao?.DiaAtendimento?.Contains(dia) ?? false ? "checked" : "") class="form-check-input" />
+                                    <label class="form-check-label">@dia</label>
+                                </div>
+                            }
+                            <span asp-validation-for="Configuracao.DiaAtendimento" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <!-- Horário de Atendimento -->
+                    <div class="col-md-6 pt-4">
+                        <div class="form-group pt-2">
+                            <label asp-for="Configuracao.HoraInicio" class="control-label">
+                                <h6 class="text-center">Início</h6>
+                            </label>
+                            <input asp-for="Configuracao.HoraInicio" class="form-control input-time" />
+                            <span asp-validation-for="Configuracao.HoraInicio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group pt-2">
+                            <label asp-for="Configuracao.HoraFim" class="control-label">
+                                <h6 class="text-center">Fim</h6>
+                            </label>
+                            <input asp-for="Configuracao.HoraFim" class="form-control  input-time" />
+                            <span asp-validation-for="Configuracao.HoraFim" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="form-group pt-4">
+                        <button type="submit" class="btn btn-primary">SALVAR ALTERAÇÕES</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Formulário para editar informações do usuário -->
+            <div class="col-lg-6 mb-4 form-dados-user">
+                <h4 class="pt-2 m-3">Credenciais de acesso</h4>
+                <form asp-action="Edit" asp-controller="Configuracao" method="post">
+
+                    <div class="form-group m-3">
+                        <label asp-for="Usuario.NomeUsuario">Login</label>
+                        <div class="input-group">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-at"></i></span>
+                            <input asp-for="Usuario.NomeUsuario" class="form-control" aria-label="Usuário" aria-describedby="basic-addon1" />
+                            <span asp-validation-for="Usuario.NomeUsuario" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-3">
+                        <label asp-for="Usuario.Email">Email</label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope"></i></span>
+                            <input asp-for="Usuario.Email" class="form-control" placeholder="agendahub.com.br" aria-label="Usuário" aria-describedby="basic-addon1" />
+                            <span asp-validation-for="Usuario.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group m-3">
+                        <label asp-for="Usuario.Senha">Senha</label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text" id="basic-addon1"><i class="bi bi-key"></i></span>
+                            <input asp-for="Usuario.Senha" class="form-control" placeholder="Senha Atual" aria-label="Usuário" aria-describedby="basic-addon1" />
+                            <span asp-validation-for="Usuario.Senha" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="form-group pt-4">
+                            <button type="submit" class="btn btn-primary">SALVAR ALTERAÇÕES</button>
+
+
+                            @* <a class="btn btn-outline-danger" asp-action="Delete" asp-controller="Account" asp-route-id="@Model.Usuario.Id">Excluir Conta</a>*@
+                        </div>
+                    </div>
+                </form>
             </div>
+
         </div>
+        
+
+       
     </div>
-
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('.form-Partial').click(function (e) {
-            e.preventDefault();
-
-            // Obtém a URL da ação do link
-            var url = $(this).attr('href');
-
-            // Faz uma requisição AJAX para obter a PartialView
-            $.get(url, function (data) {
-                // Atualiza o conteúdo do contêiner com a PartialView
-                $('#sectionContainer').html(data);
-
-                // Adiciona o seguinte código para redirecionar após carregar a PartialView
-                history.pushState(null, '', url);
-            });
-        });
-
-        // Manipula o evento de popstate para restaurar o estado ao navegar de volta
-        window.addEventListener('popstate', function (event) {
-            if (event.state) {
-                // Carrega a PartialView ao navegar para frente ou para trás no histórico
-                $.get(event.state.url, function (data) {
-                    $('#sectionContainer').html(data);
-                });
-            }
-        });
-    });
-</script>
-
-
-
- *@
+@section Scripts {
+    <script>
+        // Verifica se há uma mensagem de erro na TempData
+        var senhaIncorreta = "@TempData["SenhaIncorreta"]";
+        if (senhaIncorreta) {
+            // Exibe um alerta com a mensagem de erro
+            alert(senhaIncorreta);
+        }
+    </script>
+}

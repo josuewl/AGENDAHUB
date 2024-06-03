@@ -1,64 +1,57 @@
 ﻿@model IEnumerable<AGENDAHUB.Models.Agendamento>
 <link rel="stylesheet" href="~/css/Agendamentos.css" asp-append-version="true" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 @{
     ViewData["Title"] = "Agendamentos";
 }
 
-<h1 class="text-center pb-3">Agendamentos</h1>
+<h1 class="pb-3">Agendamentos</h1>
 
-<!-- Botão Novo Agendamento -->
-<div class="row d-flex justify-content-center">
-    <div class="col-xl-4 col-12">
-        <div class="row d-flex justify-content-center">
-            <div class="col-xl-6 col-12">
-                <a asp-action="VerificarConfiguracoes" class="btn btn-outline-info" id="btnNovoAgendamento">+ Novo Agendamento</a>
-            </div>
-        </div>
+<!-- Container principal -->
+<div class="d-flex flex-wrap justify-content-center align-items-center header-agendamento">
+
+    <!-- Botão Novo Agendamento -->
+    <div class="p-2 d-flex align-items-center">
+        <a asp-action="VerificarConfiguracoes" class="btn btn-success" id="btnNovoAgendamento"><i class="bi bi-plus-circle-fill"> Novo Agendamento</i></a>
     </div>
 
     <!-- Filtro de data -->
-    <div class="col-xl-4 col-8 d-flex justify-content-center pb-3 form-inline">
-        <form asp-action="SearchByDate" method="get" class="w-100">
-            <div class="input-group w-100">
-                <label class="mt-2 me-2" for="dataInicio">Início:</label>
-                <input class="form-control me-2 text-center" type="date" name="dataInicio" id="dataInicio" />
-                <label class="mt-2 me-2" for="dataFim">Fim:</label>
-                <input class="form-control text-center" type="date" name="dataFim" id="dataFim" />
-                <div class="input-group-append">
-                    <button class="btn btn-outline-info" type="submit" id="botaoPesquisar">
-                        <img src="~/images/pesquisar.png" style="height:1.5rem; width:auto" title="Pesquisar" />
-                    </button>
-                </div>
-            </div>
+    <div class="p-2 d-flex align-items-center">
+        <form asp-action="SearchByDate" method="get" class="d-flex align-items-center">
+            <label class="me-2" for="dataInicio">Início</label>
+            <input class="form-control me-2 text-center" type="date" name="dataInicio" id="dataInicio" />
+            <label class="me-2" for="dataFim">Fim</label>
+            <input class="form-control text-center" type="date" name="dataFim" id="dataFim" />
+            <button class="btn" type="submit" id="botaoPesquisar">
+                <i class="bi bi-search" style="height:1.5rem; width:auto" title="Pesquisar"></i>
+            </button>
         </form>
     </div>
 
     <!-- Campo de Pesquisa -->
-    <div class="col-xl-4 col-12 d-flex justify-content-center">
-        <form asp-action="SearchAgendamentos" method="get">
-            <div class="input-group w-100">
-                <input type="text" class="form-control" name="search" placeholder="Pesquisar Agendamento" id="pesquisar">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-info" type="submit" id="botaoPesquisar">
-                        <img src="~/images/pesquisar.png" style="height:1.5rem; width:auto" title="Pesquisar" />
-                    </button>
-                </div>
-            </div>
+    <div class="p-2 flex-grow-1 d-flex align-items-center">
+        <form asp-action="SearchAgendamentos" method="get" class="d-flex align-items-center w-100">
+            <input type="text" class="form-control" name="search" placeholder="Pesquisar" id="pesquisar">
+            <button class="btn" type="submit" id="botaoPesquisar">
+                <i class="bi bi-search" style="height:1.5rem; width:auto" title="Pesquisar"></i>
+            </button>
         </form>
     </div>
-</div>
 
-<!-- Filtro Status -->
-<div class="row d-flex justify-content-center pb-3">
-    <div class="col-xl-3 col-8" id="statusSelect">
-        <select id="statusFilter" class="form-select w-100">
+    <!-- Filtro Status -->
+    <div class="p-2 d-flex align-items-center">
+        <select id="statusFilter" class="form-select">
             <option value="all">Todos</option>
             <option value="pendente">Pendentes</option>
             <option value="concluido">Concluídos</option>
             <option value="cancelado">Cancelados</option>
         </select>
     </div>
+
 </div>
+
 
 @if (TempData.ContainsKey("MessageNenhumAgendamento"))
 {

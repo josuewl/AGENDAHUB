@@ -31,10 +31,13 @@ namespace AGENDAHUB.Models
         [DataType(DataType.Time)]
         public TimeSpan HoraFim { get; set; }
 
+        public byte[] Imagem { get; set; }
+
         // Campo de ID do usuário logado para restringir os dados
         [ForeignKey("UsuarioID")]
         public int UsuarioID { get; set; }
         public Usuario Usuario { get; set; } // Propriedade de navegação
+
 
         [NotMapped]
         public List<DiasAtendimento> DiaAtendimento

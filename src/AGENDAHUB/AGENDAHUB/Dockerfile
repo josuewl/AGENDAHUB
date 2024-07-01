@@ -8,7 +8,7 @@ RUN dotnet restore
 
 # Copie o restante dos arquivos e construa a aplicação
 COPY . ./
-RUN dotnet publish "AGENDAHUB.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Release -o /app/publish
 
 # Use a imagem oficial do .NET Runtime como a imagem de runtime
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime

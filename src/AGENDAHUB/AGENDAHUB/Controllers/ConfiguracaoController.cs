@@ -37,6 +37,13 @@ namespace AGENDAHUB.Controllers
                 return NotFound();
             }
 
+            // Verifique se Configuracao não é nulo
+            if (usuario.Configuracao == null)
+            {
+                usuario.Configuracao = new Configuracao();
+            }
+
+            // Verifique se Imagem não é nulo
             ViewBag.HasExistingImage = (usuario.Configuracao.Imagem != null && usuario.Configuracao.Imagem.Length > 0);
 
             var viewModel = new ConfiguracaoUsuarioViewModel
@@ -45,8 +52,9 @@ namespace AGENDAHUB.Controllers
                 Configuracao = usuario.Configuracao
             };
 
-            return View(viewModel); // Aqui você está passando o viewModel para a view
+            return View(viewModel);
         }
+
 
         private int GetUserId()
         {
@@ -277,27 +285,41 @@ namespace AGENDAHUB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditInformacoesEmpresariais([FromForm] Configuracao configuracao, IFormFile Imagem)
         {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdString))
+            {
+                return NotFound();
+            }
+
+            if (!int.TryParse(userIdString, out int userId))
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                  
-                    var usuarioNoBanco = await _context.Usuarios.Include(u => u.Configuracao)
-                                                         .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
+                    var usuarioNoBanco = await _context.Usuarios
+                        .Include(u => u.Configuracao)
+                        .FirstOrDefaultAsync(u => u.Id == userId);
 
                     if (usuarioNoBanco == null)
                     {
-                       return NotFound();
+                        return NotFound();
+                    }
+
+                    // Verifique se Configuracao não é nulo
+                    if (usuarioNoBanco.Configuracao == null)
+                    {
+                        usuarioNoBanco.Configuracao = new Configuracao();
                     }
 
                     usuarioNoBanco.Configuracao.NomeEmpresa = configuracao.NomeEmpresa;
                     usuarioNoBanco.Configuracao.Cnpj = configuracao.Cnpj;
                     usuarioNoBanco.Configuracao.Email = configuracao.Email;
                     usuarioNoBanco.Configuracao.Endereco = configuracao.Endereco;
-                    
 
                     // Se a imagem é fornecida, atualize-a
                     if (Imagem != null && Imagem.Length > 0)
@@ -307,28 +329,27 @@ namespace AGENDAHUB.Controllers
                         usuarioNoBanco.Configuracao.Imagem = memoryStream.ToArray();
                     }
 
-
                     // Salva as alterações no banco de dados
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction("Index", "Configuracao");
                 }
-                
                 catch (DbUpdateConcurrencyException)
                 {
-                if (!UsuarioExists(configuracao.UsuarioID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    if (!UsuarioExists(userId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
-        }
 
             return View(configuracao);
         }
+
 
         [HttpGet]
         [ActionName("EditDiasAtendimento")]
@@ -368,7 +389,13 @@ namespace AGENDAHUB.Controllers
                         return NotFound();
                     }
 
-                  
+                    // Verifique se Configuracao não é nulo
+                    if (usuarioNoBanco.Configuracao == null)
+                    {
+                        usuarioNoBanco.Configuracao = new Configuracao();
+                    }
+
+
                     usuarioNoBanco.Configuracao.DiaAtendimento = configuracao.DiaAtendimento;
                     usuarioNoBanco.Configuracao.HoraInicio = configuracao.HoraInicio;
                     usuarioNoBanco.Configuracao.HoraFim = configuracao.HoraFim;

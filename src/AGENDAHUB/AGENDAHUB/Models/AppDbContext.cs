@@ -63,13 +63,13 @@ namespace AGENDAHUB.Models
             modelBuilder.Entity<Agendamento>()
                 .HasOne(a => a.Servico)
                 .WithMany(s => s.Agendamento)
-                .HasForeignKey(a => a.IdServico)
+                .HasForeignKey(a => a.ID_Servico)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Agendamento>()
                 .HasOne(a => a.Profissional)
                 .WithMany(p => p.Agendamento)
-                .HasForeignKey(a => a.IdProfissional)
+                .HasForeignKey(a => a.ID_Profissional)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);

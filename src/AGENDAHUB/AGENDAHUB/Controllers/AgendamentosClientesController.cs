@@ -134,9 +134,9 @@ namespace AGENDAHUB.Controllers
                     .Where(p => p.UsuarioID == usuarioIDInt)
                     .ToList();
 
-                ViewBag.Clientes = new SelectList(clientes, "ID_Cliente", "Nome", agendamentos.IdCliente);
-                ViewBag.Servicos = new SelectList(servicos, "ID_Servico", "Nome", agendamentos.IdServico);
-                ViewBag.Profissionais = new SelectList(profissionais, "ID_Profissional", "Nome", agendamentos.IdProfissional);
+                ViewBag.Clientes = new SelectList(clientes, "IdCliente", "Nome", agendamentos.IdCliente);
+                ViewBag.Servicos = new SelectList(servicos, "ID_Servico", "Nome", agendamentos.ID_Servico);
+                ViewBag.Profissionais = new SelectList(profissionais, "ID_Profissional", "Nome", agendamentos.ID_Profissional);
 
                 if (ModelState.IsValid)
                 {
@@ -333,7 +333,7 @@ namespace AGENDAHUB.Controllers
             {
                 // Obtém os horários ocupados pelos agendamentos existentes para o serviço e o profissional específicos
                 var horariosOcupados = _context.Agendamentos
-                    .Where(a => a.IdServico == selected_ID_Servico && a.IdProfissional == selected_ID_Profissional && a.Status != Agendamento.StatusAgendamento.Cancelado)
+                    .Where(a => a.ID_Servico == selected_ID_Servico && a.ID_Profissional == selected_ID_Profissional && a.Status != Agendamento.StatusAgendamento.Cancelado)
                     .Select(a => a.Data + " " + a.Hora.ToString(@"hh\:mm"))
                     .ToList();
 

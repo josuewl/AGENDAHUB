@@ -336,7 +336,7 @@ namespace AGENDAHUB.Controllers
             {
                 // Obtém os horários ocupados pelos agendamentos existentes para o serviço e o profissional específicos
                 var horariosOcupados = _context.Agendamentos
-                    .Where(a => a.IdServico == selected_ID_Servico && a.IdProfissional == selected_ID_Profissional && a.Status != Agendamento.StatusAgendamento.Cancelado)
+                    .Where(a => a.ID_Servico == selected_ID_Servico && a.ID_Profissional == selected_ID_Profissional && a.Status != Agendamento.StatusAgendamento.Cancelado)
                     .Select(a => a.Data + " " + a.Hora.ToString(@"hh\:mm"))
                     .ToList();
 
@@ -397,7 +397,7 @@ namespace AGENDAHUB.Controllers
                 var servicos = _context.Servicos.Where(s => s.UsuarioID == usuarioIDInt).ToList();
                 var profissionais = _context.Profissionais.Where(p => p.UsuarioID == usuarioIDInt).ToList();
 
-                ViewBag.Clientes = new SelectList(clientes, "ID_Cliente", "Nome", "Contato");
+                ViewBag.Clientes = new SelectList(clientes, "IdCliente", "Nome", "Contato");
                 ViewBag.Servicos = new SelectList(servicos, "ID_Servico", "Nome");
                 ViewBag.Profissionais = new SelectList(profissionais, "ID_Profissional", "Nome");
 
@@ -418,16 +418,22 @@ namespace AGENDAHUB.Controllers
         // POST: Agendamentos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID_Agendamento,ID_Servico,ID_Cliente,Data,Hora,Status,ID_Profissional")] Agendamento agendamentos)
+        public async Task<IActionResult> Create([Bind("ID_Agendamento,ID_Servico,IdCliente,Data,Hora,Status,ID_Profissional")] Agendamento agendamentos)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var configuracao = _context.Usuarios.Include(u => u.Configuracao).FirstOrDefault(u => u.Id.ToString() == userId)?.Configuracao;
             if (int.TryParse(userId, out int usuarioIDInt))
             {
                 agendamentos.UsuarioId = usuarioIDInt; // Define o UsuarioID do agendamento como um int
-                ViewBag.Clientes = new SelectList(_context.Clientes.Where(c => c.UsuarioId == usuarioIDInt), "ID_Cliente", "Nome", "Contato");
+                ViewBag.Clientes = new SelectList(_context.Clientes.Where(c => c.UsuarioId == usuarioIDInt), "IdCliente", "Nome", "Contato");
                 ViewBag.Servicos = new SelectList(_context.Servicos.Where(s => s.UsuarioID == usuarioIDInt), "ID_Servico", "Nome");
                 ViewBag.Profissionais = new SelectList(_context.Profissionais.Where(p => p.UsuarioID == usuarioIDInt), "ID_Profissional", "Nome");
+                // Adicionar código para definir ViewBag.DiasDisponiveis novamente
+                if (configuracao != null)
+                {
+                    var diasAtendimento = string.Join(",", Enumerable.Range(0, 7).Where(i => configuracao.DiasDaSemanaJson.Contains(i.ToString())));
+                    ViewBag.DiasDisponiveis = GetDiasAtendimento(diasAtendimento).Select(d => d.ToString("yyyy-MM-dd")).ToList();
+                }
 
                 if (ModelState.IsValid)
                 {
@@ -472,7 +478,7 @@ namespace AGENDAHUB.Controllers
 
             // Filtrar os dias disponíveis com base nas configurações do usuário
             var diasAtendimento = string.Join(",", Enumerable.Range(0, 7).Where(i => configuracao.DiasDaSemanaJson.Contains(i.ToString())));
-            ViewBag.DiasDisponiveis = GetDiasAtendimento(diasAtendimento).Select(d => d.ToString("yyyy-MM-dd")).ToList();
+            ViewBag.DiaAtendimento = GetDiasAtendimento(diasAtendimento).Select(d => d.ToString("yyyy-MM-dd")).ToList();
             ViewBag.Data = agendamentos.Data.ToString("yyyy-MM-dd");
 
             return View(agendamentos);

@@ -11,40 +11,40 @@ namespace AGENDAHUB.Models
         [Key]
         public int IdAgendamento { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar o serviço!")]
-        [Display(Name = "Serviço")]
-        public int IdServico { get; set; }
+        [Required(ErrorMessage = "Obrigatï¿½rio informar o serviï¿½o!")]
+        [Display(Name = "Serviï¿½o")]
+        public int ID_Servico { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar o cliente!")]
+        [Required(ErrorMessage = "Obrigatï¿½rio informar o cliente!")]
         [Display(Name = "Cliente")]
         public int IdCliente { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar a data!")]
+        [Required(ErrorMessage = "Obrigatï¿½rio informar a data!")]
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar a hora!")]
+        [Required(ErrorMessage = "Obrigatï¿½rio informar a hora!")]
         [Column(TypeName = "time")]
         public TimeSpan Hora { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar o status!")]
+        [Required(ErrorMessage = "Obrigatï¿½rio informar o status!")]
         public StatusAgendamento Status { get; set; }
 
-        [Required(ErrorMessage = "Obrigatório informar o profissional!")]
+        [Required(ErrorMessage = "Informe o Profissional!")]
         [Display(Name = "Profissional")]
-        public int IdProfissional { get; set; }
+        public int ID_Profissional { get; set; }
 
         [Required]
         public int UsuarioId { get; set; }
 
-        // Propriedades de navegação
+        // Propriedades de navegaï¿½ï¿½o
         [ForeignKey("IdCliente")]
         public Cliente Cliente { get; set; }
 
-        [ForeignKey("IdServico")]
+        [ForeignKey("ID_Servico")]
         public Servico Servico { get; set; }
 
-        [ForeignKey("IdProfissional")]
+        [ForeignKey("ID_Profissional")]
         public Profissional Profissional { get; set; }
 
         [ForeignKey("UsuarioId")]

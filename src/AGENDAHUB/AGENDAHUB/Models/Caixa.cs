@@ -10,30 +10,30 @@ namespace AGENDAHUB.Models
         [Key]
         public int ID_Caixa { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório informar a categoria")]
+        [Required(ErrorMessage = "Ã‰ obrigatÃ³rio informar a categoria")]
         public CategoriaMovimentacao Categoria { get; set; }
 
-        [Required(ErrorMessage = "É obrigatório informar o valor")]
+        [Required(ErrorMessage = "Ã‰ obrigatÃ³rio informar o valor")]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Valor { get; set; }
 
-        [Required(ErrorMessage = "é Obrigatório informar a data")]
+        [Required(ErrorMessage = "Ã‰ obrigatÃ³rio informar a data")]
         [Column(TypeName = "date")]
         public DateTime Data { get; set; }
         public string Descricao { get; set; }
 
-        // Propriedade de navegação para Usuario
+        // Propriedade de navegaÃ§Ã£o para Usuario
         public int UsuarioID { get; set; }
         public Usuario Usuario { get; set; }
 
-        // Propriedade de navegação para Agendamento
+        // Propriedade de navegaÃ§Ã£o para Agendamento
         public int? ID_Agendamento { get; set; }
         public Agendamento Agendamento { get; set; }
 
         public enum CategoriaMovimentacao
         {
             Entrada,
-            Saída
+            SaÃ­da
         }
     }
 }
